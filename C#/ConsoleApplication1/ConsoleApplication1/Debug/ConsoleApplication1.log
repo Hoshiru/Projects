@@ -1,0 +1,9 @@
+﻿  stdafx.cpp
+  ConsoleApplication1.cpp
+c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(17): error C2131: expression did not evaluate to a constant
+  c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(17): note: failure was caused by non-constant arguments or reference to a non-constant symbol
+  c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(17): note: see usage of 'n'
+c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(22): error C3863: array type 'int [n]' is not assignable
+c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(21): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1270): note: see declaration of 'scanf'
+c:\users\jared\dropbox\projects\c#\consoleapplication1\consoleapplication1\consoleapplication1.cpp(26): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'

@@ -1,0 +1,676 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\f0\fs22\par
+\par
+You want to create a game, or just want to learn how to program in C#, sometimes starting simply is the best way to go, so here's a step by step guide to creating a card game.\par
+This set of tutorials will walk you through creating a simple card game. The example is blackjack but the same principles apply to most card games so you should be able to create almost any card game once you've mastered the basics.\par
+For an example you can try out the simple poker game I created using the same principles. Starting with the relatively simple rules of blackjack, you\rquote ll learn the most common C# programming practices and techniques. Then, if you want, you can improve the game, adding more features perhaps network play for multiplayer or card games with more complex rules.\par
+What will I learn?\par
+The focus of these lessons is to show you the most common things you\rquote ll need to do to create a C# program \endash  such as creating classes, handling user inputs, and doing common calculations.\par
+What do I need to have to create this?\par
+The examples will be created using visual studio fortunately Microsoft has made this available for free at: {\field{\*\fldinst{HYPERLINK "https://www.visualstudio.com/"}}{\fldrslt{\ul\cf1 https://www.visualstudio.com/}}}\f0\fs22\par
+Download the community version and it will be all you need to create the code for this project.\par
+You're also going to need images of cards, a quick google search should find you some or you can create them from scratch. I used Photoshop to create mine. A great free alternative is the gimp: {\field{\*\fldinst{HYPERLINK "http://www.gimp.org/"}}{\fldrslt{\ul\cf1 http://www.gimp.org/}}}\f0\fs22  or you could just make some simple cards in any graphics program even paint.\par
+tutorial_intro_html_m6c9c7c61 Card drawn in MS paint\par
+save your cards as jpegs 200x270pixels and name them as follows 01_clubs.jpg, 02_clubs.jpg\'85 etc\par
+Once you have your cards and have downloaded and installed visual studio it\rquote s time to create your project.\par
+Choose file ->new -> project\par
+For this project we\rquote ll use Visual C# and windows Forms\par
+Give your project a name ( I just called mine Blackjack) and click ok.\par
+Now you should be viewing your newly created form, currently called Form1\par
+You can edit this in the properties field\par
+I\rquote ve chosen 1920,1080 as I want this project to fit a standard HD screen\par
+And I renamed it CaptnemoBlackJack. In the text field (This name doesn\rquote t really matter so pick whatever you prefer)\par
+But left the  (Name)  field as Form1 This is the field that our code can use to identify the form so well leave this as is.\par
+I\rquote ve also gone ahead and changed the BackColor  to ForestGreen which gives us a card table look.\par
+Now we need some place to display our cards, since the most cards we should have on the table in blackjack is 11 (four 2\rquote s plus three 3\rquote s plus four 1\rquote s =21)\par
+We\rquote ll need 11  PictureBoxes, drag the picturebox from the toolbox (left hand side) onto the form you can repeat this or copy and paste till you have 11 picture boxes.\par
+Should look something like this. Next We\rquote ll need a way to display messages to the user so add a RichTextBox make its size 300,100\par
+We\rquote ll also need a few buttons so drag a button from the left hand side resize it and change the text to Deal, then repeat for hit and stick\par
+Ok, we\rquote ve got a basic card table now it\rquote s time to write some code. As I already mentioned this will be C#, previously I had only written code in C and C++ but fortunately C# isn\rquote t too different. I\rquote m going to try and follow object oriented programing here and card games lend themselves quite well to this. In Visual Studio each class(object definition) is a separate file. The first thing we\rquote ll define is a card. In the solution explorer (should be to the right hand side) \par
+Right click on the project name, choose add->class\par
+Name this Card.cs and click ok\par
+You\rquote ll see the editor has created your class and added some basic code should look like this\par
+using System;\par
+using System.Collections.Generic;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+namespace blackjack\par
+\{\par
+   class Card\par
+    \{\par
+    \}\par
+\}\par
+Every card will have the following attributes: suit, value, card number\par
+We also want to define what a \lquote blank\rquote  card will be when a new card is created\par
+So now our class should look like this:\par
+  public class Card\par
+    \{\par
+        public string suit \{ set; get; \}\par
+        public int value \{ set; get; \}\par
+        public int card_number \{ set; get; \}\par
+        public Card()\par
+        \{\par
+            value = -1;\par
+            suit = "";\par
+            card_number = -1;\par
+        \}\par
+    \}\tab  //END Card class\par
+\par
+Notice I changed it to a public class so it\rquote ll be available to the rest of our project,\par
+I\rquote ve also added a comment at the end so I can clearly see where that class ends.\par
+Our next object that we\rquote ll need is a whole deck of cards. So once more right click on the\par
+Project name in the solution Explorer choose add- >class this time name it Deck.cs and click ok.\par
+Here\rquote s the code we\rquote ll put there, try reading through it, I\rquote ll go through and explain it afterward.\par
+Deck.cs\par
+\par
+using System;\par
+using System.Collections.Generic;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+namespace blackjack\par
+\{\par
+    public class Deck\par
+    \{\par
+        public List<Card> cards \{ set; get; \} //deck is list of cards\par
+        // ******************************************************\par
+        public Deck()   //create a deck\par
+        \{\par
+            cards = new List<Card>();\par
+            loaddeck();\par
+        \}\par
+        // *******************************************************************\par
+        public void loaddeck()\par
+        \{\par
+            cards.Clear();\par
+            int cardnum = 1;\par
+            for (int i = 1; i < 5; i++) // 4 suits\par
+            \{\par
+                for (int j = 1; j < 14; j++)  // 13 cards each (total 52 cards)\par
+                \{\par
+                    Card currentcard = new Card(); //create a new card\par
+                    //assign suit\par
+                    currentcard.card_number = cardnum;\par
+                    if (i == 1)\par
+                        currentcard.suit = "spades";\par
+                    if (i == 2)\par
+                        currentcard.suit = "clubs";\par
+                    if (i == 3)\par
+                        currentcard.suit = "hearts";\par
+                    if (i == 4)\par
+                        currentcard.suit = "diamonds";\par
+                    // assign value\par
+                    currentcard.value = j;\par
+                    // put in deck\par
+                    cards.Add(currentcard); // adding card to deck\par
+                    //next card\par
+                    cardnum++;\par
+                \}\par
+            \}\par
+        \}\par
+        // ********************************************************************\par
+        public Card FindCard(int cardnum)\par
+        \{\par
+            foreach (Card a_card in cards)\par
+            \{\par
+                if (a_card.card_number == cardnum)\par
+                \{\par
+                    return a_card;\par
+                \}\par
+            \}\par
+            return null;\par
+        \}\par
+        // *************************************************************************\par
+    \} // end deck class\par
+\}\par
+\par
+So the first thing you should notice is that a Deck object is going to contain a List which is a type of array\par
+This list will consist of objects of the class we previously made \lquote Card\rquote  and the list will be called cards.\par
+NOTE: C# like C and C++ is case specific so Card is not the same as card, but to make it more readable since the list holds many (52) cards I have named it by the plural.\par
+Next we have a Constructor function that creates a deck, it assigns a new list to cards then calls the function loaddeck. The loaddeck function has a pair of nested loops, one that counts through the four suits and one that goes through the values 1 through 13. Each time the card number is incremented so card number 1 is the ace of spades, card number 14 is the ace of clubs etc.\par
+Finally we have a function that returns a card object from the deck when given a card number.\par
+You\rquote ll notice at this point the deck is in order we could go ahead and shuffle it now but instead I\rquote m going to randomly pick cards from the deck as we need them which will have the same effect. So what we need next is a random number, computers aren\rquote t good at random. There are a few different ways of creating these, many use the system clock as a \lquote seed\rquote  to give different results. I\rquote m going to use one that uses a cryptography library to create the seed. So once more create a new class, I\rquote ll call this one RandomNumber.cs The code for it should look like this:\par
+RandomNumber.cs\par
+\par
+using System;\par
+using System.Collections.Generic;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+namespace blackjack\par
+\{\par
+    public class RandomNumber\par
+    \{\par
+        private static readonly System.Security.Cryptography.RNGCryptoServiceProvider _seed = new System.Security.Cryptography.RNGCryptoServiceProvider();\par
+        public static int NumberBetween(int minimum, int maximum)\par
+        \{\par
+            byte[] randomNumber = new byte[1];\par
+            _seed.GetBytes(randomNumber);\par
+            double asciiValue = Convert.ToDouble(randomNumber[0]);\par
+            double multiplier = Math.Max(0, (asciiValue / 255d) - 0.00000000001d);\par
+            // adding one to the range, to allow for rounding\par
+            int range = maximum - minimum + 1;\par
+            double randomValue = Math.Floor(multiplier * range); // rounds to ensure within range\par
+            return (int)(minimum + randomValue); // adds minvalue to randomvalue(0 to max)\par
+        \}\par
+    \} // END RandomNumber\par
+\}\par
+Now we can take that random number and use it to draw cards from our deck. We\rquote ll place these cards in a new object I\rquote ll call Hand. Yep, you guessed it, create a new class and name this one Hand.cs Just like a deck, a hand will need a list structure to hold our cards, I\rquote m also going to add a number_of_cards which will be the initial amount of cards dealt (2) and we can increment this as more cards are added to the hand. We also have score to store the value of the hand and a string called result, this will give us some output to display to the player based on the current score.\par
+Hand.cs\par
+using System;\par
+using System.Collections.Generic;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+\par
+namespace blackjack\par
+\{\par
+    public class Hand\par
+    \{\par
+        public List<Card> cards \{ set; get; \}\par
+        public int number_of_cards \{ set; get; \}\par
+        public int score \{ set; get; \}\par
+        public string result \{ set; get; \}\par
+        // ******************************************************\par
+       public Hand(int numcards) //constructor creates list and places empty cards in it\par
+        \{\par
+            number_of_cards = numcards; //number of cards in a hand\par
+            cards = new List<Card>();     // list to hold cards\par
+            Card emptycard = new Card(); // blank card\par
+            for (int i = 0; i < numcards; i++)\par
+            \{\par
+                cards.Add(emptycard);       // adding blank cards to list\par
+            \}\par
+        \}\par
+        //*************************************************************************\par
+       public void add_card(Deck currentdeck, int number_cards_in_a_hand) // picks random card from deck and puts it in one of the blank card spots created\par
+        \{\par
+            bool added = false;\par
+            int pickedcard = 0;\par
+\par
+            if (currentdeck.cards.Count <= 2)\par
+            \{\par
+                currentdeck.loaddeck();\par
+                //clear_hand();\par
+            \}\par
+            pickedcard = RandomNumber.NumberBetween(2, currentdeck.cards.Count - 1);\par
+            Card currentcard = currentdeck.cards.ElementAt(pickedcard);\par
+            Card tobereplaced = new Card();\par
+ \par
+            while (!added)\par
+            \{\par
+                foreach (Card temp in cards)\par
+                \{\par
+                    if (temp.suit == "") //place to put new card in\par
+                        tobereplaced = temp;\par
+                \}\par
+                if (tobereplaced != null)\par
+                \{\par
+                    cards.Remove(tobereplaced);\par
+                    cards.Add(currentcard);\par
+                    added = true;\par
+                    currentdeck.cards.Remove(currentcard);\par
+                \}\par
+            \}\par
+\par
+        \}\par
+//  ***************************************************************************\par
+        public void deal_cards(Deck currentdeck, int numcards)\par
+        \{\par
+            numcards = cards.Count;\par
+            for (int i = 0; i < numcards; i++)\par
+            \{\par
+                add_card(currentdeck, numcards);\par
+            \}\par
+        \}\par
+  //  **************************************************************************\par
+        public void evaluate_hand()\par
+        \{\par
+            score=0;\par
+           foreach (Card temp in cards)\par
+            \{\par
+                if (temp.value < 10)\par
+                    score = score + temp.value;\par
+                else\par
+                    score = score + 10; // assigning face cards a value of 10\par
+            \}\par
+            // adjust for aces\par
+            foreach (Card temp in cards)\par
+            \{\par
+                if (temp.value==1 && score+10<=21)\par
+                score = score + 10; // We haven't gone bust yet so Ace is scored at 11\par
+            \}\par
+            if (score>21)\par
+            \{\par
+                result = "Sorry you bust";\par
+            \}\par
+            else\par
+            \{\par
+                result = "You have ";\par
+            \}\par
+        \}\par
+    \} //End hand\par
+\}\par
+\par
+This class is a little longer than the previous one as I have included functions to help deal with the hand objects. First though we have the usual constructor function which creates a list of cards and inserts blank cards. Next we have the function that uses the RandomNumber class to generate a random number and use this to choose a card from the deck, which is then placed in the list by the add_card function. The add_card function is called by the deal_card function which manages how many cards are added. Finally we have the evaluate_hand function which calculates the score for a hand, adjusting aces to be 1 or eleven as necessary and setting the result string to either bust or the current score.\par
+Ok, now we have the objects we\rquote ll need lets put them into action. From the Solution Explorer choose Form1.cs and We\rquote ll be adding the following elements, a current deck the players hand, the dealers hand and the number of cards to deal initially. We\rquote ll also setup how the form is going to look at the start of the game. Here\rquote s the code, read through it and the comments should explain it.\par
+Form1.cs\par
+  using System;\par
+using System.Collections.Generic;\par
+using System.ComponentModel;\par
+using System.Data;\par
+using System.Drawing;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+using System.Windows.Forms;\par
+\par
+namespace blackjack\par
+\{\par
+    public partial class Form1 : Form\par
+    \{\par
+        public Deck currentdeck \{ get; set; \}\par
+        public Hand player_hand \{ get; set; \}\par
+        public Hand dealer_hand \{ get; set; \}\par
+        public int numcards \{ get; set; \}\par
+        public Form1()\par
+        \{\par
+            numcards = 2; //deal 2 cards initially\par
+            currentdeck = new Deck(); //create new deck of cards\par
+            player_hand = new Hand(numcards); //create hand for player\par
+            dealer_hand = new Hand(numcards); // create hand for dealer\par
+\par
+            InitializeComponent();\par
+\par
+            button1.Visible = true; // deal button is visible\par
+            button2.Visible = false; // hit button hidden\par
+            button3.Visible = false; // stick button hidden\par
+            pictureBox1.Visible = true; //showing spot for first card\par
+            pictureBox2.Visible = false; //hiding the rest\par
+            pictureBox3.Visible = false; //hiding the rest\par
+            pictureBox4.Visible = false; //hiding the rest\par
+            pictureBox5.Visible = false; //hiding the rest\par
+            pictureBox6.Visible = false; //hiding the rest\par
+            pictureBox7.Visible = false; //hiding the rest\par
+            pictureBox8.Visible = false; //hiding the rest\par
+            pictureBox9.Visible = false; //hiding the rest\par
+            pictureBox10.Visible = false; //hiding the rest\par
+            pictureBox11.Visible = false; //hiding the rest\par
+            pictureBox12.Visible = false; //hiding the rest\par
+             richTextBox1.Text = "Welcome to CaptNemo BlackJack" + Environment.NewLine;\par
+            richTextBox1.Text += "Press Deal to begin" + Environment.NewLine;\par
+        \} //END Form1\par
+    \} //End partial Class\par
+\}\par
+All right, now you actually have something to try out. Up at the top of the screen there\rquote s a Start button. Click this and your program will be compiled and started. You should have something like this:\par
+So let\rquote s make something happen when the player clicks the deal button. Close the running program then select the Form1.cs[Design] tab at the top of the project window\par
+Double click on the deal button and you\rquote ll be taken back to the Form1.cs tab but now some code has been added creating a function that will run when the deal button is clicked. Currently this is blank and should look like this:\par
+private void button1_Click(object sender, EventArgs e)\par
+        \{\par
+        \}\par
+\par
+Now we can add some code to display the players cards\par
+In between the \{ \} add display_hand(player_hand); This won\rquote t do anything yet though as we haven\rquote t created the display_hand function, so after our new function add this:\par
+ // *** Display current hand ***********************************************\par
+        public void display_hand(Hand playerhand)\par
+        \{\par
+            int count = 0;\par
+            string currentcard_picture = "";\par
+\par
+            if (playerhand.cards != null && playerhand != null)\par
+                foreach (Card currentcard in playerhand.cards)\par
+                \{\par
+                    if (currentcard != null && currentcard.suit != "" )\par
+                    \{\par
+                        if (currentcard.value < 10)\par
+                         currentcard_picture = "_0" + currentcard.value.ToString() + "_" + currentcard.suit;\par
+                        if (currentcard.value == 10)\par
+                           currentcard_picture = "_" + currentcard.value.ToString() + "_" + currentcard.suit;\par
+                        if (currentcard.value == 11)\par
+                            currentcard_picture = "J" + "_" + currentcard.suit;\par
+                        if (currentcard.value == 12)\par
+                            currentcard_picture = "Q" + "_" + currentcard.suit;\par
+                        if (currentcard.value >= 13)\par
+                            currentcard_picture = "K" + "_" + currentcard.suit;\par
+                    \}\par
+                    else\par
+                        currentcard_picture = "space";\par
+                    if (count == 0)\par
+                    \{\par
+   System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox1.Image = myImage;\par
+                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 1)\par
+                    \{\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox2.Image = myImage;\par
+                    \}\par
+                    if (count == 2)\par
+                    \{\par
+     System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox3.Image = myImage;\par
+                    \}\par
+                    if (count == 3)\par
+                    \{\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox4.Image = myImage;\par
+                    \}\par
+                    if (count == 4)\par
+                    \{\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox5.Image = myImage;\par
+                    \}\par
+                    if (count == 5)\par
+                    \{\par
+     System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox6.Image = myImage;\par
+                    \}\par
+                    if (count == 6)\par
+                    \{\par
+     System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox7.Image = myImage;\par
+                    \}\par
+                    if (count == 7)\par
+                    \{\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox8.Image = myImage;\par
+                    \}\par
+                    if (count == 8)\par
+                    \{\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox5.Image = myImage;\par
+                    \}\par
+                    if (count == 9)\par
+                    \{\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox10.Image = myImage;\par
+                    \}\par
+                    if (count == 10)\par
+                    \{\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox11.Image = myImage;\par
+                    \}\par
+                    if (count == 11)\par
+                    \{\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox12.Image = myImage;\par
+                    \}\par
+                    count++;\par
+                \}\par
+        \} // end display hand\par
+// *********************************************************************\par
+ \par
+\par
+This still won\rquote t do anything though as we have one more important step. Remember those cards you made at the beginning of all this? We need to import those to our project. At the top of the screen click on PROJECT ->blackjack properties. Then in the left hand column select Resources, along the top of this section is a tab Add Resource,  click the small black dropdown arrow on its right and choose \lquote Add existing file..\rquote  then navigate to where you saved your card images select them and click open. You\rquote ll notice the names displayed are different from the file names, visual studio adds an underscore _ since  resource names shouldn\rquote t start with a number and doesn\rquote t display the file extension. Not to worry though as our display_hand function already takes that into account. Now go back and change the button1_Click function to this:\par
+  private void button1_Click(object sender, EventArgs e)\par
+        \{\par
+            player_hand.deal_cards(currentdeck, numcards);\par
+            display_hand(player_hand);\par
+            richTextBox1.Text = player_hand.result + Environment.NewLine;\par
+        \}\par
+Go ahead and try running your project again, click the deal button you should get output like this:\par
+You\rquote ll notice that even though the deal function adds two cards to the players hand we\rquote re only seeing one. This is because we set all the picture boxes after the first one to hidden.\par
+So in the display hand function look for the section following if (count ==1), this is checking for a second card, 0 being the first. Now change it to look like this:\par
+if (count == 1)\par
+                    \{\par
+                        pictureBox2.Visible = true; //showing second card\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox2.Image = myImage;\par
+                        pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+\par
+The line pictureBox2.visible= true; shows the second card, also note the line pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage; which ensures our card image is stretched to fit the picturebox correctly. This addition should be done to all the card display sections 0 through11 now our display cards function should look like this:\par
+// *** Display current hand ***********************************************\par
+        public void display_hand(Hand playerhand)\par
+        \{\par
+            int count = 0;\par
+            string currentcard_picture = "";\par
+            DateTime t = DateTime.Now;\par
+            if (playerhand.cards != null && playerhand != null)\par
+                foreach (Card currentcard in playerhand.cards)\par
+                \{\par
+                    if (currentcard != null && currentcard.suit != "" )\par
+                    \{\par
+                        if (currentcard.value < 10)\par
+            currentcard_picture = "_0" + currentcard.value.ToString() + "_" + currentcard.suit;\par
+                        if (currentcard.value == 10)\par
+             currentcard_picture = "_" + currentcard.value.ToString() + "_" + currentcard.suit;\par
+                        if (currentcard.value == 11)\par
+                            currentcard_picture = "J" + "_" + currentcard.suit;\par
+                        if (currentcard.value == 12)\par
+                            currentcard_picture = "Q" + "_" + currentcard.suit;\par
+                        if (currentcard.value >= 13)\par
+                            currentcard_picture = "K" + "_" + currentcard.suit;\par
+                    \}\par
+                    else\par
+                        currentcard_picture = "space";\par
+                    if (count == 0)\par
+                    \{\par
+                        pictureBox1.Visible = true; //showing first card\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox1.Image = myImage;\par
+                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 1)\par
+                    \{                      \par
+                        pictureBox2.Visible = true; //showing second card\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox2.Image = myImage;\par
+                        pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 2)\par
+                    \{\par
+                        pictureBox3.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox3.Image = myImage;\par
+                        pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 3)\par
+                    \{\par
+                        pictureBox4.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox4.Image = myImage;\par
+                        pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 4)\par
+                    \{\par
+                        pictureBox5.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox5.Image = myImage;\par
+                        pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 5)\par
+                    \{\par
+                        pictureBox6.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox6.Image = myImage;\par
+                        pictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 6)\par
+                    \{\par
+                        pictureBox7.Visible = true;\par
+  System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox7.Image = myImage;\par
+                        pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 7)\par
+                    \{\par
+                        pictureBox8.Visible = true;\par
+  System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox8.Image = myImage;\par
+                        pictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 8)\par
+                    \{\par
+                        pictureBox9.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox9.Image = myImage;\par
+                        pictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 9)\par
+                    \{\par
+                        pictureBox10.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox10.Image = myImage;\par
+                        pictureBox10.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 10)\par
+                    \{\par
+                        pictureBox11.Visible = true;\par
+ System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox11.Image = myImage;\par
+                        pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                    if (count == 11)\par
+                    \{\par
+                        pictureBox12.Visible = true;\par
+  System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox12.Image = myImage;\par
+                        pictureBox12.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+                count++;\par
+             \}\par
+        \} // end display hand\par
+Go ahead and run your project and press deal, you should now see two cards, you\rquote ll notice though, that the deal button is still displayed, if you click it you\rquote ll continue to receive two cards each time which are displayed until all our picture boxes are filled. Let\rquote s go ahead and fix that now. In the button1_Click function (our deal button) we need to add a line to hide the deal button, then we need to make the hit and stay buttons visible, You may have also noticed the result is not showing in the textbox yet, this is because we haven\rquote t called the evaluate function yet so we may as well do that now, here\rquote s the updated function:\par
+private void button1_Click(object sender, EventArgs e) //Deal button\par
+        \{\par
+            player_hand.deal_cards(currentdeck, numcards);\par
+            display_hand(player_hand);\par
+            player_hand.evaluate_hand();\par
+            richTextBox1.Text = player_hand.result + Environment.NewLine;\par
+            button1.Visible = false;\par
+            button2.Visible = true;\par
+            button3.Visible = true;\par
+        \}\par
+Now if you run the project you should see two cards when the deal button is clicked and their combined value displayed in the textbox. The hit and stick button still don\rquote t do anything though so let\rquote s take care of that next. Going back to the Form1.cs[Design] and double click on the hit button. This will create the button2_Click function. Add code so it looks like the following:\par
+private void button2_Click(object sender, EventArgs e) // Hit function\par
+        \{\par
+            player_hand.add_card(currentdeck, 1);\par
+            display_hand(player_hand);\par
+            player_hand.evaluate_hand();\par
+            richTextBox1.Text = player_hand.result + Environment.NewLine;\par
+            button1.Visible = false;\par
+            button2.Visible = true;\par
+            button3.Visible = true;\par
+        \}\par
+Depending on the order you made your picture boxes the cards are probably showing up beneath the previous dealt ones, we can fix this with pictureBox.BringToFront(); add this to each of the sections in the display cards function and they\rquote ll each move to the front as they are dealt.\par
+Here\rquote s how it looks for the first card , repeat for the rest:\par
+  if (count == 0)\par
+                    \{\par
+                        pictureBox1.Visible = true; //showing first card\par
+    System.Resources.ResourceManager rm = blackjack.Properties.Resources.ResourceManager;\par
+                        Bitmap myImage = (Bitmap)rm.GetObject(currentcard_picture);\par
+                        pictureBox1.Image = myImage;\par
+                        pictureBox1.BringToFront();\par
+                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;\par
+                    \}\par
+Ok, the cards continue to be dealt even after we\rquote ve bust so lets add a end_game function, this goes in Form1.cs you can add it right after the button2 function.\par
+private void end_game(Hand player_hand, Hand dealer_hand)\par
+        \{\par
+            dealer_hand.deal_cards(currentdeck, numcards); //deal cards to dealer\par
+            dealer_hand.evaluate_hand();\par
+            while(dealer_hand.score<15) //dealer sticks on 15 or higher\par
+            \{\par
+                dealer_hand.add_card(currentdeck, 1);\par
+                dealer_hand.evaluate_hand();\par
+            \}\par
+            if (player_hand.score > 21)\par
+            \{\par
+                richTextBox1.Text = "You bust better luck next time." + Environment.NewLine;\par
+            \}\par
+            if (dealer_hand.score > 21)\par
+            \{ \par
+richTextBox1.Text = "Dealer has " + dealer_hand.score + ", congratulations you win ." +Environment.NewLine;\par
+            \}\par
+            else\par
+            \{\par
+                if ((player_hand.score > dealer_hand.score) && (player_hand.score <= 21))\par
+                \{\par
+richTextBox1.Text = "Dealer has " + dealer_hand.score + ", congratulations you win ." + Environment.NewLine;\par
+                \}\par
+                if(player_hand.score ==21)\par
+                \{\par
+         richTextBox1.Text = "Congratulations BLACKJACK, you win ." + Environment.NewLine;\par
+                \}\par
+            \}\par
+            button1.Visible = true; // deal button is visible\par
+            button2.Visible = false; // hit button hidden\par
+            button3.Visible = false; // stick button hidden\par
+         \}\par
+\par
+By now most of this should be fairly familiar. Firstly we give the dealer his cards, note he sticks at 15 or higher, this can be changed to match whichever rules you\rquote d prefer. We then compare the dealer hand and player hand to see who won, and display an appropriate message to the player. We\rquote ll need to call this function when the stick button is clicked so double click on the stick button to generate a button3_Click function and add code so it looks like this:\par
+     private void button3_Click(object sender, EventArgs e) // stick button\par
+        \{\par
+            end_game(player_hand, dealer_hand);\par
+        \}\par
+We\rquote ll need to call the end_game function from another place as well, in the button2_Click function that is called when the player clicks hit, we\rquote ll check if the player goes bust and if so call end_game.\par
+if (player_hand.score >= 21)\par
+            \{\par
+                 end_game(player_hand, dealer_hand);\par
+            \}  \par
+Almost done now, the end_game function displays the result of the current hand and reveals the deal button, so the final step we\rquote ll make here is to reset the hands when the deal button is clicked. The new deal function should look like this:\par
+  private void button1_Click(object sender, EventArgs e) //Deal button\par
+        \{\par
+            //initialise components\par
+            numcards = 2; //deal 2 cards initially\par
+            currentdeck = new Deck(); //create new deck of cards\par
+            player_hand = new Hand(numcards); //create hand for player\par
+            dealer_hand = new Hand(numcards); // create hand for dealer\par
+            button1.Visible = true; // deal button is visible\par
+            button2.Visible = false; // hit button hidden\par
+            button3.Visible = false; // stick button hidden\par
+            pictureBox1.Visible = true; //showing spot for first card\par
+            pictureBox2.Visible = false; //showing second card\par
+            pictureBox3.Visible = false; //hiding the rest\par
+            pictureBox4.Visible = false; //hiding the rest\par
+            pictureBox5.Visible = false; //hiding the rest\par
+            pictureBox6.Visible = false; //hiding the rest\par
+            pictureBox7.Visible = false; //hiding the rest\par
+            pictureBox8.Visible = false; //hiding the rest\par
+            pictureBox9.Visible = false; //hiding the rest\par
+            pictureBox10.Visible = false; //hiding the rest\par
+            pictureBox11.Visible = false; //hiding the rest\par
+            pictureBox12.Visible = false; //hiding the rest\par
+            richTextBox1.Text = "Welcome to CaptNemo BlackJack" + Environment.NewLine;\par
+            richTextBox1.Text += "Press Deal to begin" + Environment.NewLine;\par
+            player_hand.deal_cards(currentdeck, numcards);\par
+            display_hand(player_hand);\par
+            player_hand.evaluate_hand();\par
+           richTextBox1.Text = player_hand.result + Environment.NewLine;\par
+            button1.Visible = false;\par
+            button2.Visible = true;\par
+            button3.Visible = true;\par
+        \}\par
+There you go a working black jack game, some ideas for improvement, add a bet button, award the player a starting amount of money and keep score. Adding multiple player options etc. I\rquote ll leave those for you though. Please feel free to leave any questions or comments. If you make a great card game I\rquote d love to hear about it.\par
+\par
+ \par
+}
+ 

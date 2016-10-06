@@ -1,0 +1,221 @@
+body {
+  background-color: #292929;
+  color: #EFEFEF;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  font-size: 18px;
+  text-align: center; }
+
+header {
+  width: 100%;
+  background-color: black;
+  box-shadow: 0 0 2px 0 #E0E0E0;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5); }
+  header .container {
+    margin: 0 auto;
+    padding: 0 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: stretch; }
+    header .container .fa {
+      color: #33CCD3; }
+    header .container #logo {
+      width: 30%;
+      padding: 0 0 0 0;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: stretch;
+      transition: color 0.2s; }
+      header .container #logo #logotext {
+        text-decoration: none;
+        color: #EFEFEF; }
+      header .container #logo #logotext:hover {
+        color: #d6d6d6; }
+    header .container #menu-toggle {
+      display: none;
+      border: 0;
+      outline: none;
+      background: transparent; }
+      @media (max-width: 590px) {
+        header .container #menu-toggle {
+          display: block; } }
+    header .container #nav {
+      width: 70%;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      align-content: stretch; }
+      header .container #nav .highlight {
+        border-bottom: 2px solid transparent;
+        text-decoration: none;
+        color: #33CCD3;
+        transition: border-bottom 0.2s cubic-bezier(0.215, 0.61, 0.355, 1); }
+      header .container #nav #hlight1:hover {
+        border-bottom: 2px solid magenta; }
+      header .container #nav #hlight2:hover {
+        border-bottom: 2px solid aqua; }
+      header .container #nav #hlight3:hover {
+        border-bottom: 2px solid chartreuse; }
+      header .container #nav #hlight4:hover {
+        border-bottom: 2px solid darkorange; }
+      header .container #nav #hlight5:hover {
+        border-bottom: 2px solid red; }
+      @media (max-width: 590px) {
+        header .container #nav {
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: space-around;
+          align-items: center;
+          align-content: center;
+          position: fixed;
+          top: 6%;
+          width: 100%; }
+          header .container #nav a {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #EFEFEF;
+            border-top: 1px groove;
+            text-align: center;
+            width: 50%; } }
+
+main .container {
+  background-color: #1A1A1A; }
+  main .container .OcampoImage {
+    margin: 0 auto;
+    width: 100%;
+    padding: 10% 0;
+    background: url(/images/eocampo.jpg) no-repeat top center;
+    background-size: cover; }
+    main .container .OcampoImage .text {
+      padding: 10%;
+      width: 100%;
+      height: 100%;
+      text-align: right;
+      color: deeppink;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)); }
+      main .container .OcampoImage .text .btn {
+        background-color: paleturquoise;
+        border-radius: 2px;
+        padding: 10px; }
+        main .container .OcampoImage .text .btn:hover {
+          text-decoration: none;
+          background: #85e5e5; }
+  main .container h2 {
+    color: #33CCD3;
+    text-align: center; }
+  main .container .WhatsGood {
+    background-color: #EFEFEF;
+    color: #292929; }
+  main .container .VerifyTest {
+    background-color: #EFEFEF;
+    color: #292929; }
+
+footer {
+  width: 100%;
+  background-color: black;
+  box-shadow: 0 0 0 1px #33CCD3; }
+  footer h1 {
+    color: #33CCD3; }
+  footer .fa {
+    color: #EFEFEF; }
+  footer .container {
+    margin: 0 auto;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: stretch; }
+    footer .container .complogo {
+      width: 30%;
+      text-align: left;
+      font-size: 12px;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start; }
+    footer .container .footNav {
+      width: 40%; }
+      @media (max-width: 570px) {
+        footer .container .footNav {
+          width: 100%; } }
+      footer .container .footNav .icon-facebook {
+        background-color: #3b5998; }
+      footer .container .footNav .icon-twitter {
+        background-color: #55acee; }
+      footer .container .footNav .icon-linkedin {
+        background-color: #0077B5; }
+      footer .container .footNav .icon-google {
+        background-color: #dd4b39; }
+      footer .container .footNav .items {
+        color: #33CCD3; }
+    footer .container .extra {
+      width: 30%;
+      text-align: right;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+      align-items: center;
+      align-content: stretch; }
+      footer .container .extra .fa {
+        color: #33CCD3; }
+      footer .container .extra a {
+        text-decoration: none;
+        color: #EFEFEF; }
+    @media (max-width: 570px) {
+      footer .container {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch; }
+        footer .container #foot-top-row {
+          width: 100;
+          text-align: center;
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: center;
+          align-items: center;
+          align-content: stretch; } }
+
+/*# sourceMappingURL=oStyle.css.map */

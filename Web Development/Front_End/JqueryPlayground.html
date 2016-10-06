@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <!-- jQuery Javascript Library-->
+        <script
+			  src="https://code.jquery.com/jquery-3.1.0.js"
+			  integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+			  crossorigin="anonymous">
+        </script>
+
+            <!-- Bootstrap Library (using cdn is preferred, good practice to use integrity/crossorigin properties) -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>  
+        
+            <!-- FontAwesome library for custom icons -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/> 
+
+            <!-- Animate.css Library-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+        
+    </head>
+    
+    <body>
+                    <!-- Javascript is default 'script' language in HTML5 -->
+        <script>
+          $(document).ready(function() {
+            $("button").addClass("animated");         // Animate button elements
+            //$(".btn").addClass("shake");              // Shake btns .class
+            $("#target1").addClass("btn-primary");    // Make button #id primary color
+            $("#target2").css("color", "red");        // Adjust css through jQuery
+            $("#target3").html("<em>#target3</em>");  // Adjust html thorugh jQuery
+            $("#target4").prop("disabled", true);     // Adjust properties
+            $("#target5").remove();
+            $("#target6").removeClass("btn-default"); // Remove a class
+            $("#target2").appendTo("#right-well");    // Append an element to another
+            $("#target2").clone().appendTo("#left-well");   // Function Chaining
+            $("#target1").parent().css("background-color", "#389");// Parent of target1(left-well)
+            $("#right-well").children().css("color", "#d2b");  // Child of right-well(buttons)
+            $(".target:nth-child(3)").addClass("animated shake");  // 3rd Child of both wells
+            $(".target:even").addClass("animated bounce");      // Every other elem(f/ 1st)
+            $("#right-well").addClass("animated hinge");
+          });
+        </script>
+
+        <!-- Only change code above this line  -->
+        <div class="container-fluid">
+          <h3 class="text-primary text-center">jQuery Playground</h3>
+          <div class="row">
+            <div class="col-xs-6">
+              <h4>#left-well</h4>
+              <div class="well" id="left-well">
+                <button class="btn btn-default target" id="target1">#target1</button>
+                <button class="btn btn-default target" id="target2">#target2</button>
+                <button class="btn btn-default target" id="target3">#target3</button>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <h4>#right-well</h4>
+              <div class="well" id="right-well">
+                <button class="btn btn-default target" id="target4">#target4</button>
+                <button class="btn btn-default target" id="target5">#target5</button>
+                <button class="btn btn-default target" id="target6">#target6</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+    </body>
+</html>

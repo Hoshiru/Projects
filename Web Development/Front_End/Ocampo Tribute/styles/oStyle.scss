@@ -1,0 +1,279 @@
+// Bourbon
+@import "bourbon/bourbon";
+
+// Mixin (params) - @mixin / @include || Extend (no params, used class) - .flexbox / @extend .flexbox || Placeholder (unused class, just a macro)- %flexbox / @extend %flexbox
+
+// mixins
+@mixin flexbox {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+@mixin order($val) {
+  -webkit-box-ordinal-group: $val;  
+  -moz-box-ordinal-group: $val;     
+  -ms-flex-order: $val;     
+  -webkit-order: $val;  
+  order: $val;
+}
+
+@mixin transition($vals) {
+  -webkit-transition: $vals;
+  -moz-transition: $vals;
+  -o-transition: $vals;
+  transition: $vals;
+}
+
+// colors (kinda like variables, use "$white" instead of #EFEFEF in code)
+$white: #EFEFEF;
+$gray: #E0E0E0;
+$blue: #33CCD3;
+$red: deeppink;
+$green: #54AC9C;
+$dark: #292929;
+
+body {                                          // defaults
+    background-color: $dark;
+    color: $white;
+    font-family: "Open Sans", Helvetica, sans-serif;
+    font-size: 18px;
+    text-align: center;
+}
+
+header {                                        // navigation bar
+    width: 100%;
+    background-color: black;
+    box-shadow: 0 0 2px 0 $gray;
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+    .container {
+        margin: 0 auto;
+        padding: 0 0;
+        @include flexbox;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+        .fa {
+            color: $blue;
+        }
+        #logo {
+            width: 30%;
+            padding: 0 0 0 0;
+            #logotext {
+                text-decoration: none;
+                color: $white;
+            }
+            @include flexbox;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: stretch;
+            transition: color 0.2s;
+            #logotext:hover {
+                color: darken($white, 10%);
+            }
+        }
+        #menu-toggle {                          // hide menu button on normal displays
+            display: none;
+            border: 0;
+            outline: none;
+            background: transparent;
+            @media (max-width: 590px) {         // show on small displays
+                display: block;
+            }
+        }
+        #nav {
+            width: 70%;
+            @include flexbox;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            align-content: stretch;
+           
+            .highlight {                        // Hover style
+                border-bottom: 2px solid transparent;
+                text-decoration: none;
+                color: $blue;
+                transition: border-bottom 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+            #hlight1:hover {
+                border-bottom: 2px solid magenta;  
+            }
+            #hlight2:hover {
+                border-bottom: 2px solid aqua;  
+            }
+            #hlight3:hover {
+                border-bottom: 2px solid chartreuse;  
+            }
+            #hlight4:hover {
+                border-bottom: 2px solid darkorange;  
+            }
+            #hlight5:hover {
+                border-bottom: 2px solid red;  
+            }   
+            
+            @media (max-width: 590px) {         // reformat nav menu on small displays
+                @include flexbox;
+                flex-flow: column nowrap;
+                justify-content: space-around;
+                align-items: center;
+                align-content: center;
+                position: fixed;
+                top: 6%;
+                width: 100%;
+                a {
+                    background-color: rgba(0,0,0,0.5);
+                    color: $white;
+                    border-top: 1px groove;
+                    text-align: center;
+                    width: 50%;
+                }
+            }
+        }
+    }
+}
+
+main {
+    .container {
+        background-color: #1A1A1A;
+    
+        .OcampoImage {
+            margin: 0 auto;
+            width: 100%;
+            padding: 10% 0;
+            background: url(/images/eocampo.jpg) no-repeat top center;
+            background-size: cover;
+
+            .text {
+                padding: 10%;
+                width: 100%;
+                height: 100%;
+                text-align: right;
+                color: $red;
+                background-image: linear-gradient(to right, rgba(0,0,0,.1), rgba(0,0,0,.6));
+                .btn {
+                    background-color: paleturquoise;
+                    border-radius: 2px;
+                    padding: 10px;
+                    &:hover {
+                        text-decoration: none;
+                        background: darken(paleturquoise, 10%)
+                    }
+                }
+            }
+        }
+
+        h2 {
+            color: $blue;
+            text-align: center;
+        }
+
+        .intro {
+
+        }
+
+        .WhatsGood {
+            background-color: $white;
+            color: $dark;
+        }
+
+        .NotGood {
+            img {
+                max-width: 100%;
+            }
+        }
+
+        .VerifyTest {
+            background-color: $white;
+            color: $dark;
+        }
+    }
+}
+
+footer{
+    width: 100%;
+    background-color: black;
+    box-shadow: 0 0 0 1px $blue;
+    h1 {
+        color: $blue;
+    }
+    .fa {
+        color: $white;
+    }
+    .container{
+        margin: 0 auto;
+        @include flexbox;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: stretch;
+      
+        .complogo {
+            width: 30%;
+            text-align: left;
+            font-size: 12px;
+            @include flexbox;
+            flex-flow: column nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+        .footNav {
+            width: 40%;
+            @media (max-width: 570px){            // Take entire width on small displays
+                width: 100%;
+            }
+            .icon-facebook {
+                background-color: #3b5998;
+            }
+            .icon-twitter {
+                background-color: #55acee;
+            }
+            .icon-linkedin {
+                background-color: #0077B5;
+            }
+            .icon-google {
+                background-color: #dd4b39;
+            }
+            .items {
+                color: $blue;
+            }
+        }
+        .extra {
+            width: 30%;
+            text-align: right;
+            .fa {
+                color: $blue;
+            }
+            a {
+                text-decoration: none;
+                color: $white;
+            }
+            @include flexbox;
+            flex-flow: row nowrap;
+            justify-content: flex-end;
+            align-items: center;
+            align-content: stretch;
+        }
+        @media (max-width: 570px){                 // Reformat footer for small displays
+            @include flexbox;
+            flex-flow: column nowrap;
+            justify-content: space-between;
+            align-items: center;
+            align-content: stretch;
+            #foot-top-row {
+                width: 100;
+                text-align: center;
+                @include flexbox;
+                flex-flow: row nowrap;
+                justify-content: center;
+                align-items: center;
+                align-content: stretch;
+            }
+        }
+    }
+}

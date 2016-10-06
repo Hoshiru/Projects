@@ -1,0 +1,118 @@
+// ---------------- HTML
+
+<div class="response"></div>
+  <form id="guess">
+    <h3 class="message">Guess the number</h3>
+    <input type="text" name="guess" placeholder="?">
+    <button>Guess Number</button>
+  </form>
+  <div class="countup"></div>
+  <div class="log"></div>
+
+// ---------------- CSS
+
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500);
+
+body, body * {
+  font-family: Ubuntu, sans-serif;
+}
+
+.response, .log, .countup {
+  text-align: center;
+  margin-top: 50px;
+  height: 50px;
+  color: #FFABAB;
+  font-size: 2em;
+}
+
+h3 {
+  text-align: center;
+  margin: 0 0 20px;
+  color: #4C4945;
+}
+
+form {
+  background: #FFF2E6;
+  margin: auto;
+  padding: 50px;
+  border-radius: 10px;
+  font-size: 2em;
+  width: 315px;
+}
+
+input {
+  border: 1px solid #ddd0d2;
+  background: #FFFCFA;
+  padding: 5px;
+  width: calc(100% - 270px);
+  font-size: 1em;
+  text-align: center;
+}
+
+button {
+  background: #FFABAB;
+  border: 1px solid #FF9C9C;
+  padding: 5px;
+  color: #FFFCFA;
+  width: 250px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+// ---------------- Javascript
+
+var correctAnswer = Math.ceil(Math.random()*10); 
+// random number between 0 and 10 rouded up
+
+var input = document.querySelector('input');
+var response = document.querySelector('.response');
+var form = document.querySelector('#guess');
+// Acquire various properties into variables
+
+form.addEventListener("submit", checkAnswer);
+// check for a submit event and execute checkAnswer
+// form.addEventListener("submit", function(){})
+// can declare/define a function within
+
+function checkAnswer(e){
+  e.preventDefault();
+  
+  var theirAnswer = Number(input.value);  // get user's input value
+  
+  if(theirAnswer === correctAnswer) {
+    response.innerHTML = "Yay! You're correct!";
+  }
+  else if (isNaN(theirAnswer)){    // if answer is not a number (NaN)
+    response.innerHTML = "That's not a number!";
+  }
+  else if (theirAnswer > correctAnswer){
+    response.innerHTML = "Too Big";
+  }
+  else if (theirAnswer < correctAnswer){
+    response.innerHTML = "Too Small";
+  } 
+ 
+// --------------- jQuery 
+   setInterval(function(){								// make the text flash different colors
+      var red = Math.ceil(Math.random()*255)
+      var green = Math.ceil(Math.random()*255)
+      var blue = Math.ceil(Math.random()*255)
+      $(".message").css("color", "rgb(" + red + "," + green + "," blue +")")
+    }, 500);
+    clearInterval(handle)
+	
+/*$("input").on("mouseover", function(e){
+  $(this).css("display", "none")
+})
+
+$("input").on("mouseover", function(e){
+  $("input").animate({
+    top: Math.ceil(Math.random() * 200),
+    left: Math.ceil(Math.random() * 200)
+  }, 100, function(){})
+})        
+  
+// jQuery code to move the input box to a random position on mouseover */
+  
+  
+}

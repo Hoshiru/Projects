@@ -1,0 +1,46 @@
+body {
+	background-color: #f0f8ff
+}
+
+h2 {
+    font-family: Lobster, Monospace;
+}
+
+.center{                                               /* applied to all text elements that need to be centered */
+    text-align: center;                                  /* the "text-center" class in bootstrap already has this, if using bootstrap */
+}
+
+img.cenimg {                                           /* Classes should be general and can be overwritten by id's */
+    display: block;                                             /* override priority given to classes written lower in the file */
+    margin: 0 auto;                                             /* This class should be called "cen" and applied to elements for that purpose */
+    box-shadow: rgba(0,0,0,0.2) 10px 10px;                          /* instead of being called erica for her image, erica should be an id instead */
+}
+
+table, td {
+	border: 1px #70b8ff dashed;
+}
+
+td img {
+    width:100px;
+	height:100px;
+}
+
+#container {                                        /* id's should be for specific elements and override class styles */
+    display: flex;                                  
+    justify-content: center;                            /* can be overritten by inline styling in the html element */
+    background-color: #505;                 /* use !important at the end of an attribute for ultimate overriding. (color: red !important) --> */
+}
+
+#SocBtns {
+    display: flex;                   /* Flexbox Feature CSS3 for easy aligning */
+    justify-content: center;            /* determines space between elements*/
+    flex-direction: row;                /* default value; can be omitted */
+    flex-wrap: nowrap;                  /* default value; can be omitted */
+}
+                                             
+	                                    
+
+
+
+
+
